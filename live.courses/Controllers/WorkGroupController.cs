@@ -187,6 +187,8 @@ namespace live.courses.Controllers
                 return NotFound();
             }
             var current_user = db.AspNetUsers.FirstOrDefault(x => x.Id == user_id);
+            var group_tags = db.work_group_tags.Where(x => x.work_group_id == id).Select(z => z.tag_name);
+
             var liked = db.likes.FirstOrDefault(x => x.liked_id == id && x.liked_type == "group" && x.user_id == current_user.Id);
             var is_liked = false;
             if (liked != null)
@@ -210,7 +212,7 @@ namespace live.courses.Controllers
                 work_group.Archived,
                 Available = work_group.availlable,
                 MembersCount = work_group.Work_group_members.Count,
-                groupTags = work_group.work_group_tags.Select(x=>x.tag_name).ToList(),
+                groupTags = group_tags  ,
                 is_liked
                 //groupMembers = work_group.Work_group_members.ToList()
             };

@@ -24,49 +24,119 @@ namespace live.courses.Controllers
             {
                 return BadRequest(ModelState);
             }
-            List<int> ids = new List<int>();
-            foreach (string item in tags.tag_names)
-            {
-                if (!db.tags.Any(x=>x.tag1==item))
-                {
-                    tag tag_to_add = new tag();
-                    tag_to_add.tag1 = item;
-                    db.tags.Add(tag_to_add);
-                    db.SaveChanges();
-                    ids.Add(db.tags.OrderByDescending(x => x.id).FirstOrDefault().id);
+            //List<int> ids = new List<int>();
+            //foreach (string item in tags.tag_names)
+            //{
+            //    if (!db.tags.Any(x=>x.tag1==item))
+            //    {
+            //        tag tag_to_add = new tag();
+            //        tag_to_add.tag1 = item;
+            //        db.tags.Add(tag_to_add);
+            //        db.SaveChanges();
+            //        ids.Add(db.tags.OrderByDescending(x => x.id).FirstOrDefault().id);
                     
-                }
-                else
-                {
-                    ids.Add(db.tags.FirstOrDefault(x=>x.tag1==item).id);
-                }
-            }
+
+            //    }
+            //    else
+            //    {
+            //        ids.Add(db.tags.FirstOrDefault(x=>x.tag1==item).id);
+            //    }
+            //}
             if (tags.Type == "course")
             {
-                foreach (int item in ids)
+
+                foreach (string item in tags.tag_names)
                 {
-                    course_tags t = new course_tags
+                    if (!db.tags.Any(x => x.tag1 == item))
                     {
-                        course_id = tags.TypeId,
-                        tag_id =item
-                    };
-                    db.course_tags.Add(t);
-                    db.SaveChanges();
+                        tag tag_to_add = new tag();
+                        tag_to_add.tag1 = item;
+                        db.tags.Add(tag_to_add);
+                        db.SaveChanges();
+                        //ids.Add(db.tags.OrderByDescending(x => x.id).FirstOrDefault().id);
+
+                        course_tags t = new course_tags
+                        {
+                            course_id = tags.TypeId,
+                            tag_id = db.tags.OrderByDescending(x => x.id).FirstOrDefault().id,
+                            tag_name=item
+                        };
+                        db.course_tags.Add(t);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        //ids.Add(db.tags.FirstOrDefault(x => x.tag1 == item).id);
+                        course_tags t = new course_tags
+                        {
+                            course_id = tags.TypeId,
+                            tag_id = db.tags.FirstOrDefault(x => x.tag1 == item).id,
+                            tag_name = item
+                        };
+                        db.course_tags.Add(t);
+                        db.SaveChanges();
+                    }
                 }
+
+                //foreach (int item in ids)
+                //{
+                //    course_tags t = new course_tags
+                //    {
+                //        course_id = tags.TypeId,
+                //        tag_id =item
+                //    };
+                //    db.course_tags.Add(t);
+                //    db.SaveChanges();
+                //}
                 
             }
             else if (tags.Type == "group")
             {
-                foreach (int item in ids)
+
+
+
+                foreach (string item in tags.tag_names)
                 {
-                    work_group_tags t = new work_group_tags
+                    if (!db.tags.Any(x => x.tag1 == item))
                     {
-                        work_group_id = tags.TypeId,
-                        tag_id = item
-                    };
-                    db.work_group_tags.Add(t);
-                    db.SaveChanges();
+                        tag tag_to_add = new tag();
+                        tag_to_add.tag1 = item;
+                        db.tags.Add(tag_to_add);
+                        db.SaveChanges();
+                        //ids.Add(db.tags.OrderByDescending(x => x.id).FirstOrDefault().id);
+
+                        work_group_tags t = new work_group_tags
+                        {
+                            work_group_id = tags.TypeId,
+                            tag_id = db.tags.OrderByDescending(x => x.id).FirstOrDefault().id,
+                            tag_name = item
+                        };
+                        db.work_group_tags.Add(t);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        //ids.Add(db.tags.FirstOrDefault(x => x.tag1 == item).id);
+                        work_group_tags t = new work_group_tags
+                        {
+                            work_group_id = tags.TypeId,
+                            tag_id = db.tags.FirstOrDefault(x => x.tag1 == item).id,
+                            tag_name = item
+                        };
+                        db.work_group_tags.Add(t);
+                        db.SaveChanges();
+                    }
                 }
+                //foreach (int item in ids)
+                //{
+                //    work_group_tags t = new work_group_tags
+                //    {
+                //        work_group_id = tags.TypeId,
+                //        tag_id = item
+                //    };
+                //    db.work_group_tags.Add(t);
+                //    db.SaveChanges();
+                //}
 
             }
 

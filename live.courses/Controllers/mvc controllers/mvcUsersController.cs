@@ -10,6 +10,9 @@ using live.courses.Models;
 
 namespace live.courses.Controllers.mvc_controllers
 {
+ /// <summary>
+ /// /////////asfour
+ /// </summary>
     public class mvcUsersController : Controller
     {
         private adv_coursesEntities db = new adv_coursesEntities();
@@ -36,6 +39,11 @@ namespace live.courses.Controllers.mvc_controllers
         public ActionResult Get_All_instructors()
         {
             return View("Index", db.AspNetUsers.Where(x=>x.IsInstructor==true).ToList());
+        }
+        public ActionResult Get_All_Requests()
+        {
+            ViewBag.note = "Note : requests includes All non instructors that have uploaded the gurantee decument";
+            return View("Index", db.AspNetUsers.Where(x => x.IsInstructor == false && !string.IsNullOrEmpty(x.GuaranteeDecument)).ToList());
         }
         public ActionResult Get_All_Non_instructors()
         {

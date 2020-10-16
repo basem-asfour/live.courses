@@ -344,14 +344,15 @@ namespace live.courses.Controllers
                 return NotFound();
             }
             var current_user = db.AspNetUsers.FirstOrDefault(x => x.Id ==user_id);
+            var course_tags = db.course_tags.Where(x => x.course_id==id).Select(z=>z.tag_name);
             var liked = db.likes.FirstOrDefault(x => x.liked_id == id && x.liked_type == "course" && x.user_id == current_user.Id);
             var is_liked = false;
             if (liked!= null)
             {
                  is_liked = true;
             }
-            
-            
+
+            var zzz = course.course_tags.ToList();
             var my_course = new {
                 id = course.id,
                 name = course.name,
@@ -371,7 +372,7 @@ namespace live.courses.Controllers
                 Available=course.availlable,
                 course.Archived,
                 MembersCount = course.Course_Members.Count,
-                CourseTags=course.course_tags.ToList(),
+                CourseTags= course_tags,
                 CourseMembers=course.Course_Members.ToList(),
                 is_liked
             };
